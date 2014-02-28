@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title> phpORMbr by danielcesario</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1> phpORMbr</h1>
+        <h2>ORM PHP simples para ser utilizado com MySQL</h2>
+        <a href="https://github.com/danielcesario/phpORMbr" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="phpormbr" class="anchor" href="#phpormbr"><span class="octicon octicon-link"></span></a>phpORMbr</h1>
+
+<p>ORM PHP simples para ser utilizado com MySQL. Foi desenvolvido para simplificar operações básicas de manipulação de dados. Utiliza padrões de JSON para mapear as funções das classes e objetos, para recuperar os padrões utiliza as funções de reflection do PHP.</p>
+
+<h2>
+<a name="instala%C3%A7%C3%A3o" class="anchor" href="#instala%C3%A7%C3%A3o"><span class="octicon octicon-link"></span></a>Instalação</h2>
+
+<p>Somente dois aquivos:</p>
+
+<ul>
+<li>BasicDao.class.php: Lógica do ORM</li>
+<li>ConnectionFactory.class.php: Singleton para a conexão com o BD</li>
+</ul><h2>
+<a name="classe-mapeada" class="anchor" href="#classe-mapeada"><span class="octicon octicon-link"></span></a>Classe Mapeada</h2>
+
+<p>É simples mapear a classe, basta colocar as propriedades nos comentários.</p>
+
+<div class="highlight highlight-php"><pre><span class="sd">/**</span>
+<span class="sd"> * "Tabela":"usuario"</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">Usuario</span> <span class="p">{</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * "Coluna":"id",</span>
+<span class="sd">     * "Tipo":"int",</span>
+<span class="sd">     * "AutoIncremento":"sim",</span>
+<span class="sd">     * "ChavePrimaria":"sim",</span>
+<span class="sd">     * "Nulo":"nao"</span>
+<span class="sd">     */</span>    
+    <span class="k">private</span> <span class="nv">$id</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * "Coluna":"nome",</span>
+<span class="sd">     * "Tipo":"varchar",</span>
+<span class="sd">     * "Tamanho":80,</span>
+<span class="sd">     * "Nulo":"nao"</span>
+<span class="sd">     */</span>    
+    <span class="k">private</span> <span class="nv">$nome</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * "Coluna":"email",</span>
+<span class="sd">     * "Tipo":"varchar",</span>
+<span class="sd">     * "Tamanho":80,</span>
+<span class="sd">     * "Nulo":"nao"</span>
+<span class="sd">     */</span>    
+    <span class="k">private</span> <span class="nv">$email</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * "Coluna":"senha",</span>
+<span class="sd">     * "Tipo":"varchar",</span>
+<span class="sd">     * "Tamanho":20,</span>
+<span class="sd">     * "Nulo":"nao"</span>
+<span class="sd">     */</span>    
+    <span class="k">private</span> <span class="nv">$senha</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * "Coluna":"tipo",</span>
+<span class="sd">     * "Tipo":"int",</span>
+<span class="sd">     * "Tamanho":1,</span>
+<span class="sd">     * "Nulo":"nao"</span>
+<span class="sd">     */</span>    
+    <span class="k">private</span> <span class="nv">$tipo</span><span class="p">;</span>
+
+    <span class="c1">//getters e setters</span>
+
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="exemplos-de-uso" class="anchor" href="#exemplos-de-uso"><span class="octicon octicon-link"></span></a>Exemplos de uso</h2>
+
+<p>Utilizando os métodos para manipular os dados para um CRUD simples.</p>
+
+<h3>
+<a name="importando" class="anchor" href="#importando"><span class="octicon octicon-link"></span></a>Importando</h3>
+
+<div class="highlight highlight-php"><pre>
+    <span class="k">require</span> <span class="s1">'./Usuario.class.php'</span><span class="p">;</span>
+    <span class="k">require</span> <span class="s1">'./dao/BasicDao.class.php'</span><span class="p">;</span>
+
+    <span class="nv">$dao</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BasicDao</span><span class="p">();</span>
+</pre></div>
+
+<h3>
+<a name="inserir" class="anchor" href="#inserir"><span class="octicon octicon-link"></span></a>Inserir</h3>
+
+<p>Basta criar o objeto, preencha as propriedades e <strong>salvar</strong>!</p>
+
+<div class="highlight highlight-php"><pre>    <span class="c1">//Inserir</span>
+    <span class="nv">$u</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Usuario</span><span class="p">();</span>
+    <span class="nv">$u</span><span class="o">-&gt;</span><span class="na">setNome</span><span class="p">(</span><span class="s2">"Fulano da Silva"</span><span class="p">);</span>
+    <span class="nv">$u</span><span class="o">-&gt;</span><span class="na">setEmail</span><span class="p">(</span><span class="s2">"fulano@gmail.com"</span><span class="p">);</span>
+    <span class="nv">$u</span><span class="o">-&gt;</span><span class="na">setSenha</span><span class="p">(</span><span class="s2">"123"</span><span class="p">);</span>
+    <span class="nv">$dao</span><span class="o">-&gt;</span><span class="na">salvar</span><span class="p">(</span><span class="nv">$u</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="atualizar" class="anchor" href="#atualizar"><span class="octicon octicon-link"></span></a>Atualizar</h3>
+
+<p>Crie um objeto, preencha as propriedades e <strong>salvar</strong>! Não esqueça de preencher a propriedade marcada como Chave Primária! Se a chave primária estiver preenchida o método faz um UPDATE caso  contrário faz INSERT dos dados.</p>
+
+<div class="highlight highlight-php"><pre>    <span class="c1">//Atualizar    </span>
+    <span class="nv">$u</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Usuario</span><span class="p">();</span>
+    <span class="nv">$u</span><span class="o">-&gt;</span><span class="na">setId</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+    <span class="nv">$u</span><span class="o">-&gt;</span><span class="na">setNome</span><span class="p">(</span><span class="s2">"Ciclado da Silva"</span><span class="p">);</span>
+    <span class="nv">$u</span><span class="o">-&gt;</span><span class="na">setEmail</span><span class="p">(</span><span class="s2">"ciclano@gmail.com"</span><span class="p">);</span>
+    <span class="nv">$u</span><span class="o">-&gt;</span><span class="na">setSenha</span><span class="p">(</span><span class="s2">"456"</span><span class="p">);</span>
+    <span class="nv">$dao</span><span class="o">-&gt;</span><span class="na">salvar</span><span class="p">(</span><span class="nv">$u</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="recuperar" class="anchor" href="#recuperar"><span class="octicon octicon-link"></span></a>Recuperar</h3>
+
+<p>Crie um objeto que servirá de modelo para a pesquisa, no exemplo se mais de um registro possuir no campo email o valor "<a href="mailto:ciclano@gmail.com">ciclano@gmail.com</a>" ambos serão retornados. O retorno é uma array, por reflection o método <strong>recuperar</strong> retorna uma array do mesmo tipo do modelo que foi passado. </p>
+
+<div class="highlight highlight-php"><pre>    <span class="c1">//Recuperar    </span>
+    <span class="nv">$u</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Usuario</span><span class="p">();</span>
+    <span class="nv">$u</span><span class="o">-&gt;</span><span class="na">setEmail</span><span class="p">(</span><span class="s2">"ciclano@gmail.com"</span><span class="p">);</span>
+    <span class="nv">$usuarios</span> <span class="o">=</span> <span class="nv">$dao</span><span class="o">-&gt;</span><span class="na">recuperar</span><span class="p">(</span><span class="nv">$u</span><span class="p">);</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$usuarios</span> <span class="k">as</span> <span class="nv">$usuario</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$usuario</span><span class="o">-&gt;</span><span class="na">getId</span><span class="p">()</span><span class="o">.</span><span class="s1">'&lt;br&gt;'</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="nv">$usuario</span><span class="o">-&gt;</span><span class="na">getNome</span><span class="p">()</span><span class="o">.</span><span class="s1">'&lt;br&gt;'</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="nv">$usuario</span><span class="o">-&gt;</span><span class="na">getEmail</span><span class="p">()</span><span class="o">.</span><span class="s1">'&lt;br&gt;&lt;br&gt;'</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="excluir" class="anchor" href="#excluir"><span class="octicon octicon-link"></span></a>Excluir</h3>
+
+<p>O método <strong>excluir</strong> é bem simples, basta criar um objeto e preencher a propriedade da chave primária com o identificador que se desejado e pronto!</p>
+
+<div class="highlight highlight-php"><pre>    <span class="c1">//Excluir</span>
+    <span class="nv">$u</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Usuario</span><span class="p">();</span>
+    <span class="nv">$u</span><span class="o">-&gt;</span><span class="na">setId</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+    <span class="nv">$dao</span><span class="o">-&gt;</span><span class="na">excluir</span><span class="p">(</span><span class="nv">$u</span><span class="p">);</span>
+
+</pre></div>
+
+<h2>
+<a name="pr%C3%B3ximos-passos" class="anchor" href="#pr%C3%B3ximos-passos"><span class="octicon octicon-link"></span></a>Próximos passos</h2>
+
+<p>Muitas coisas ainda podem ser feitas, basta ajuda e colaboração para que o framework possa ficar mais robusto e com funções avançadas. Algumas sugestões de mudanças:</p>
+
+<ul>
+<li>Tratamento de Exceções;</li>
+<li>OneToMany, ManyToOne e ManyToMany;</li>
+<li>Integração com outros DBMSs;</li>
+<li>Trabalhar e Interpretar tipos de dados diferentes;</li>
+<li>E muito mais!</li>
+</ul><h2>
+<a name="download-fork-e-commit" class="anchor" href="#download-fork-e-commit"><span class="octicon octicon-link"></span></a>Download, Fork e Commit!</h2>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/danielcesario/phpORMbr/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/danielcesario/phpORMbr/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/danielcesario/phpORMbr"></a> is maintained by <a href="https://github.com/danielcesario">danielcesario</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
