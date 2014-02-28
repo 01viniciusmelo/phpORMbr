@@ -121,7 +121,7 @@ Crie um objeto que servirá de modelo para a pesquisa, no exemplo se mais de um 
 ```
 
 ### Excluir
-O método **excluir** é bem simples, basta criar um objeto e preencher a propriedade da chave primária com o identificador que se desejado e pronto!
+O método **excluir** é bem simples, basta criar um objeto e preencher a propriedade da chave primária com o identificador desejado e pronto!
 ```php    
     //Excluir
     $u = new Usuario();
